@@ -1,6 +1,25 @@
 import numpy as np
+import warnings
 import matplotlib.pyplot as plt
 from src.util import *
+
+def check_stability(rho_trace: np.ndarray, rho_max: float, tol: float = 1e-9,
+                    strict: bool = False) -> float:
+    """Verify max_t rho(A_t) <= rho_max on the realised trajectory.
+
+    The global rescale only checks the driver extremes, which is not sufficient
+    for non-symmetric A0 (rho is not convex in d), so this is the actual check.
+    Warns on violation, or raises if strict. Returns max_t rho(A_t).
+    """
+    rho_peak = float(np.max(rho_trace))
+    if rho_peak > rho_max + tol:
+        msg = (f"max_t rho(A_t) = {rho_peak:.4f} exceeds rho_max = {rho_max:.4f} "
+               f"(argmax at t={int(np.argmax(rho_trace))})")
+        if strict:
+            raise RuntimeError(msg)
+        warnings.warn(msg, RuntimeWarning, stacklevel=2)
+    return rho_peak
+
 
 def simulate_var_low_rank(
     N: int,
@@ -216,6 +235,8 @@ def simulate_var_based_on_C(
         X[t] = x_t
         x_prev = x_t
 
+    check_stability(rho_trace, rho_max)
+
     if plot_rho_trace:
         plot_rho_trace_figure(rho_trace=rho_trace, rho_max=rho_max, rho0=target_rho0)
     
@@ -330,6 +351,8 @@ def simulate_var_based_on_C_with_noise__in_TVP(
         x_t = At @ x_prev + eta_t
         X[t] = x_t
         x_prev = x_t
+
+    check_stability(rho_trace, rho_max)
 
     # 7) Diagnostics / plots
     if plot_rho_trace:
