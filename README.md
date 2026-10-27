@@ -20,7 +20,7 @@ pip install -r requirements.txt
 
 ## Running the notebooks
 
-All three notebooks live at the repo root, next to `src/`, and can be opened and run directly
+All notebooks live at the repo root, next to `src/`, and can be opened and run directly
 with Jupyter started from this directory:
 
 - **`Figure_2_VAR.ipynb`** — main-text VAR figure (panels A, C/D, E).
@@ -30,6 +30,16 @@ with Jupyter started from this directory:
 
   ```bash
   export NEUROPIXELS_DATA_ROOT=/path/to/your/neuropixels/functional_connectivity
+  ```
+
+- **`Figure_3_brain_observatory_generalisation.ipynb`** — supplementary generalisation
+  check: reruns Figure 3 Panel B's within-subject pipeline unchanged on a second,
+  independent Neuropixels session type ("Brain Observatory 1.1": different stimulus
+  paradigm, different animal cohort, ~5-minute native recordings). Requires its own raw
+  dataset (not bundled). Point at your local copy before running:
+
+  ```bash
+  export BRAIN_OBSERVATORY_DATA_ROOT=/path/to/your/neuropixels/brain_observatory
   ```
 
 Each notebook's own figures and tables are written under `outputs/`:
