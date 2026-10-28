@@ -3,3 +3,11 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 /outputs/*
+# mouse_cortex_blank.png is a static schematic fixture (not a generated output) used
+# as the background for the Panel D spatial map -- keep it tracked despite the blanket
+# ignore above.
+!/outputs/figures/
+/outputs/figures/*
+!/outputs/figures/neuropixels/
+/outputs/figures/neuropixels/*
+!/outputs/figures/neuropixels/mouse_cortex_blank.png
